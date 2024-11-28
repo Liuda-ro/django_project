@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16.4
+    container_name: postgres_container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: L322434i
+      POSTGRES_DB: rental_db
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  django_app:
+    build:
+      context: .  # Вказує на поточний каталог, де знаходиться Dockerfile
+      dockerfile: Dockerfile
+    container_name: django_container
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django_app:/app
+    depends_on:
+      - db
+    environment:
+      DB_NAME: rental_db
+      DB_USER: postgres
+      DB_PASSWORD: L322434i
+      DB_HOST: db
+      DB_PORT: 5432
+
+  adminer:
+    image: adminer
+    container_name: adminer_container
+    ports:
+      - "5050:80"

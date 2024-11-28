@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SkorobohataL8</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { font-weight: bold; }
+        h1 { text-align: center; }
+        em { color: blue; font-style: italic; }
+    </style>
+</head>
+<body>
+<pre>
+    {{ tables|safe }}
+</pre>
+<h1>SkorobohataL8</h1>
+<em>Skorobohata Liudmyla (KH_21003б)</em>
+
+{% for table_name, rows in tables.items %}
+<h2>{{ table_name }}</h2>
+<table>
+    <thead>
+    <tr>
+        {% for field in rows.model._meta.fields %}
+        <th>{{ field.name }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+    <tr>
+        {% for field in rows.model._meta.fields %}
+        <td>{{ row|getattr:field.name|default:"-" }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+</body>
+</html>
